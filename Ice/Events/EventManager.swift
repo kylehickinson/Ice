@@ -316,9 +316,6 @@ final class EventManager {
             return event
         }
 
-        // notify each overlay panel that a menu bar item is being dragged
-        appState.menuBarManager.appearanceManager.setIsDraggingMenuBarItem(true)
-
         // show all items, including section dividers
         for section in appState.menuBarManager.sections {
             section.show()
@@ -334,15 +331,6 @@ final class EventManager {
         return event
     }
 
-    // MARK: Left Mouse Up
-
-    private(set) lazy var leftMouseUpMonitor = UniversalEventMonitor(
-        mask: .leftMouseUp
-    ) { [weak appState] event in
-        appState?.menuBarManager.appearanceManager.setIsDraggingMenuBarItem(false)
-        return event
-    }
-
     // MARK: - All Monitors
 
     private lazy var allMonitors = [
@@ -353,7 +341,6 @@ final class EventManager {
         preventShowOnHoverMonitor,
         showRightClickMenuMonitor,
         leftMouseDraggedMonitor,
-        leftMouseUpMonitor,
     ]
 
     // MARK: - Initializers

@@ -116,23 +116,3 @@ final class AccessibilityPermission: Permission {
         )
     }
 }
-
-// MARK: - ScreenRecordingPermission
-
-final class ScreenRecordingPermission: Permission {
-    static let shared = ScreenRecordingPermission()
-
-    init() {
-        super.init(
-            title: "Screen Recording",
-            details: ["Apply custom styling to the menu bar."],
-            notes: ["Ice does not record your screen."],
-            check: {
-                CGPreflightScreenCaptureAccess()
-            },
-            request: {
-                CGRequestScreenCaptureAccess()
-            }
-        )
-    }
-}

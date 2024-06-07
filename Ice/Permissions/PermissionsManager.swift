@@ -12,7 +12,6 @@ class PermissionsManager: ObservableObject {
     @Published var hasPermission: Bool = false
 
     let accessibilityPermission = AccessibilityPermission.shared
-    let screenRecordingPermission = ScreenRecordingPermission.shared
 
     private(set) weak var appState: AppState?
 
@@ -27,10 +26,9 @@ class PermissionsManager: ObservableObject {
         var c = Set<AnyCancellable>()
 
         accessibilityPermission.$hasPermission
-            .combineLatest(screenRecordingPermission.$hasPermission)
-            .sink { [weak self] hasPermission1, hasPermission2 in
-                self?.hasPermission = hasPermission1 && hasPermission2
-            }
+            .sink(receiveValue: { [weak self] hasPermission in
+                self?.hasPermission = hasPermission
+            })
             .store(in: &c)
 
         cancellables = c
@@ -39,6 +37,5 @@ class PermissionsManager: ObservableObject {
     /// Stops running all permissions checks.
     func stopAllChecks() {
         accessibilityPermission.stopCheck()
-        screenRecordingPermission.stopCheck()
     }
 }

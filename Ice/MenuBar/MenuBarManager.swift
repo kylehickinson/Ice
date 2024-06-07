@@ -14,8 +14,6 @@ final class MenuBarManager: ObservableObject {
 
     private(set) var sections = [MenuBarSection]()
 
-    let appearanceManager: MenuBarAppearanceManager
-
     private let encoder = JSONEncoder()
 
     private let decoder = JSONDecoder()
@@ -28,7 +26,6 @@ final class MenuBarManager: ObservableObject {
 
     /// Initializes a new menu bar manager instance.
     init(appState: AppState) {
-        self.appearanceManager = MenuBarAppearanceManager(appState: appState)
         self.appState = appState
     }
 
@@ -36,7 +33,6 @@ final class MenuBarManager: ObservableObject {
     func performSetup() {
         initializeSections()
         configureCancellables()
-        appearanceManager.performSetup()
     }
 
     /// Performs the initial setup of the menu bar's section list.
@@ -192,16 +188,6 @@ final class MenuBarManager: ObservableObject {
     func showRightClickMenu(at point: CGPoint) {
         let menu = NSMenu(title: "Ice")
 
-        let editItem = NSMenuItem(
-            title: "Edit Menu Bar Appearance…",
-            action: #selector(showAppearanceEditorPopover),
-            keyEquivalent: ""
-        )
-        editItem.target = self
-        menu.addItem(editItem)
-
-        menu.addItem(.separator())
-
         let settingsItem = NSMenuItem(
             title: "Ice Settings…",
             action: #selector(AppDelegate.openSettingsWindow),
@@ -236,17 +222,6 @@ final class MenuBarManager: ObservableObject {
         } else {
             hideApplicationMenus()
         }
-    }
-
-    /// Shows the appearance editor popover, centered under the menu bar.
-    @objc private func showAppearanceEditorPopover() {
-        guard let appState else {
-            Logger.menuBarManager.error("Error showing appearance editor popover: Missing app state")
-            return
-        }
-        let panel = MenuBarAppearanceEditorPanel(appState: appState)
-        panel.orderFrontRegardless()
-        panel.showAppearanceEditorPopover()
     }
 
     /// Returns the menu bar section with the given name.

@@ -57,7 +57,6 @@ struct PermissionsView: View {
     private var permissionsGroupStack: some View {
         VStack {
             permissionBox(permissionsManager.accessibilityPermission)
-            permissionBox(permissionsManager.screenRecordingPermission)
         }
     }
 
